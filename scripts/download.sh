@@ -16,3 +16,23 @@
 #   CCAGGATTTACAGACTTTAAA
 #
 #   If $4 == "another" only the **first two sequence** should be output
+
+URL = $1
+DEST_DIRECTORY = $2
+UNCOMPRESS = $3
+SPECIFIED_WORD = $4
+
+if [ "$#" -eq 3 ]
+then
+	echo "Downloading Data files..."
+
+wget -O $DEST_DIRECTORY/basename($URL) $URL
+
+if [$UNCOMPRESS == "Yes"]
+then
+	echo "Uncompressing ..."
+	gunzip $DEST_DIRECTORY/basename($URL)
+
+if [$SPECIFIED_WORD == small nuclear]
+	echo "Remove all sequences corresponding to small nuclear RNAs..."
+
