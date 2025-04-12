@@ -9,7 +9,7 @@ done
 bash scripts/download.sh https://bioinformatics.cnio.es/data/courses/decont/contaminants.fasta.gz res yes "small nuclear"
 
 # Index the contaminants file
-bash scripts/index.sh res/contaminants.fasta res/contaminants_idx
+bash scripts/index.sh res/contaminants_filtered.fasta res/contaminants_idx
 
 # Merge the samples into a single file
 for sid in $(<list_of_sample_ids>) #TODO

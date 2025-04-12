@@ -4,5 +4,12 @@
 # The STAR command is provided for you. You should replace the parts surrounded
 # by "<>" and uncomment it.
 
-# STAR --runThreadN 4 --runMode genomeGenerate --genomeDir <outdir> \
-# --genomeFastaFiles <genomefile> --genomeSAindexNbases 9
+CONTAMINANTS_DATABASE_FILE = $1
+DEST_DIRECTORY = $2
+
+STAR \
+    --runThreadN 4 \
+    --runMode genomeGenerate \
+    --genomeDir $DEST_DIRECTORY \
+    --genomeFastaFiles $CONTAMINANT_DATABASE_FILE \
+    --genomeSAindexNbases 9

@@ -22,9 +22,6 @@ DEST_DIRECTORY=$2
 UNCOMPRESS=$3
 SPECIFIED_WORD=$4
 
-echo "SPECIFIED_WORD received: $SPECIFIED_WORD"  # Verifica que el valor es correcto
-echo
-
 if [ "$#" -eq 4 ]
 then
         echo "Downloading contaminants file..."
