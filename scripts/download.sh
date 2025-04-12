@@ -17,22 +17,65 @@
 #
 #   If $4 == "another" only the **first two sequence** should be output
 
-URL = $1
-DEST_DIRECTORY = $2
-UNCOMPRESS = $3
-SPECIFIED_WORD = $4
+URL=$1
+DEST_DIRECTORY=$2
+UNCOMPRESS=$3
+SPECIFIED_WORD=$4
 
-if [ "$#" -eq 3 ]
+echo "SPECIFIED_WORD received: $SPECIFIED_WORD"  # Verifica que el valor es correcto
+echo
+
+if [ "$#" -eq 4 ]
 then
-	echo "Downloading Data files..."
+        echo "Downloading contaminants file..."
+else
+        echo "Downloading Data files..."
+fi
+echo
 
-wget -O $DEST_DIRECTORY/basename($URL) $URL
+wget -O $DEST_DIRECTORY/$(basename $URL) $URL
+echo
 
-if [$UNCOMPRESS == "Yes"]
+if [ $UNCOMPRESS == "yes" ]
 then
-	echo "Uncompressing ..."
-	gunzip $DEST_DIRECTORY/basename($URL)
+        echo "Uncompressing ..."
+        gunzip $DEST_DIRECTORY/$(basename $URL)
+fi
+echo
 
-if [$SPECIFIED_WORD == small nuclear]
-	echo "Remove all sequences corresponding to small nuclear RNAs..."
+if [ "$SPECIFIED_WORD" == "small nuclear" ]
+then
+        echo "Remove all sequences corresponding to small nuclear RNAs..."
 
+	awk -v pat="$SPECIFIED_WORD" '
+        BEGIN { delete_sequence = 0 }
+
+        # Si es una cabecera
+        /^>/ {
+
+                if (index($0, pat)) {
+
+                        delete_sequence = 1  # Contiene el patrón → marcar para eliminar
+
+                } else {
+
+                        delete_sequence = 0  # No contiene el patrón → conservar
+                        print $0
+                }
+
+                next #Pasamos a la siguiente linea
+
+        }
+
+
+        # Si no hemos marcado la secuencia para eliminar, la imprimimos
+
+        {
+                if(delete_sequence == 0) {
+
+                         print $0
+
+                }
+        }
+        ' $DEST_DIRECTORY/$(basename $URL .gz) > $DEST_DIRECTORY/$(basename $URL .fasta.gz)_filtered.fasta 
+fi
