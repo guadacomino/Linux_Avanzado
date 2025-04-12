@@ -3,3 +3,9 @@
 # stored in the output directory specified by the second argument ($2).
 #
 # The directory containing the samples is indicated by the first argument ($1).
+
+SAMPLES_DIRECTORY=$1
+DEST_DIRECTORY=$2
+id_SAMPLES=$3
+
+cat $SAMPLES_DIRECTORY/${id_SAMPLES}_*.fastq.gz > $DEST_DIRECTORY/${id_SAMPLES}.fastq.gz

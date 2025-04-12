@@ -35,7 +35,7 @@ echo
 
 if [ $UNCOMPRESS == "yes" ]
 then
-        echo "Uncompressing ..."
+        echo "Uncompressing contaminants file ..."
         gunzip $DEST_DIRECTORY/$(basename $URL)
 fi
 echo
