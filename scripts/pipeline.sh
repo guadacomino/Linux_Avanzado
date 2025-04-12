@@ -17,9 +17,7 @@ do
     bash scripts/merge_fastqs.sh data out/merged $sid
 done
 
-# TODO: run cutadapt for all merged files
-# cutadapt -m 18 -a TGGAATTCTCGGGTGCCAAGG --discard-untrimmed \
-#     -o <trimmed_file> <input_file> > <log_file>
+# Run cutadapt for all merged files
 mkdir out/cutadapt
 mkdir log/cutadapt
 for file  in out/merged/*.fastq.gz 
@@ -35,11 +33,12 @@ do
 	#Include cutadapt's results in pipeline.log
 	echo "Trimming Results" >>log/pipeline.log
 	echo "Processing sample $sampleid with cutadapt" >> log/pipeline.log
-	log/cutadapt/${sampleid}.log >> log/pipeline.log
-	echo -e "==============================================================="
+	grep "Reads with adapters:" log/cutadapt/${sampleid}.log >> log/pipeline.log
+	grep "Total basepairs processed:" log/cutadapt/${sampleid}.log >> log/pipeline.log
+	echo "==============================================================="
 
 
-# TODO: run STAR for all trimmed files
+# Run STAR for all trimmed files
 for fname in out/trimmed/*.fastq.gz
 do
     # you will need to obtain the sample ID from the filename
@@ -48,6 +47,12 @@ do
     STAR --runThreadN 4 --genomeDir res/contaminants_idx \
          --outReadsUnmapped Fastx --readFilesIn $fname \
          --readFilesCommand gunzip -c --outFileNamePrefix out/star/$sid
+
+    #Include STAR's results in pipeline.log
+    grep "Uniquely mapped reads %" out/star/${sid}/Log.final.out >> log/pipeline.log
+    grep "Mapped to multiple loci" out/star/${sid}/Log.final.out >> log/pipeline.log
+    grep "Mapped to too many loci" out/star/${sid}/Log.final.out >> log/pipeline.log
+
 done 
 
 # TODO: create a log file containing information from cutadapt and star logs
