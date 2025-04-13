@@ -73,3 +73,4 @@ done
 echo >>log/pipeline.log
 echo
 
+echo "############ Pipeline finished at $(date +'%H:%M:%S') ##############"
