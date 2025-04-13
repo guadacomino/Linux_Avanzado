@@ -9,4 +9,4 @@ DEST_DIRECTORY=$2
 id_SAMPLES=$3
 
 mkdir -p  out/merged
-cat $SAMPLES_DIRECTORY/${id_SAMPLES}_*.fastq.gz > $DEST_DIRECTORY/${id_SAMPLES}.fastq.gz
+cat $SAMPLES_DIRECTORY/${id_SAMPLES}-*.fastq.gz > $DEST_DIRECTORY/${id_SAMPLES}.fastq.gz
