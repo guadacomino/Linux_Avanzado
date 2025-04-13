@@ -35,7 +35,7 @@ echo
 
 if [ $UNCOMPRESS == "yes" ]
 then
-        echo "Uncompressing contaminants file ..."
+        echo "Uncompressing contaminants file..."
         gunzip $DEST_DIRECTORY/$(basename $URL)
 fi
 echo
@@ -76,3 +76,4 @@ then
         }
         ' $DEST_DIRECTORY/$(basename $URL .gz) > $DEST_DIRECTORY/$(basename $URL .fasta.gz)_filtered.fasta 
 fi
+echo
